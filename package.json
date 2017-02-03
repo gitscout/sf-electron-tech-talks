@@ -1,0 +1,15 @@
+{
+  "name": "sf-talk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/.bin/electron app/"
+  },
+  "author": "Michael Lefebvre <michael@scenedata.com> (http://michael-lefebvre.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.4.15"
+  }
+}

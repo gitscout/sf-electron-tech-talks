@@ -1,0 +1,9 @@
+# OSX pollution
+.DS_Store
+
+# NPM stuffs
+node_modules
+npm-debug.log*
+
+# keep empty forlders
+!.gitkeep
