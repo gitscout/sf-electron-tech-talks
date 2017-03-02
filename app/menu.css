@@ -335,7 +335,7 @@ body.menu-ready {
   flex: 0 0 26px;
   margin-bottom: 9px; }
   .menu__shield div {
-    background: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+    background: rgba(255,255, 0, .4) url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
     position: relative;
     width: auto; }
 

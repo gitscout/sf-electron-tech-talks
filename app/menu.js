@@ -44,6 +44,28 @@ ipcRenderer.on('menu-setup', ( e, props ) =>
 
   menuShieldDiv.removeAttribute('style')
   menuShieldDiv.style.cssText = 'width: '+props.shieldWidth+'px; height: '+props.shieldHeight+'px; left: '+props.shieldLeft+'px'
+
+
+  var createNode = html => new DOMParser().parseFromString(html, 'text/html').body.firstChild
+    , listElm    = document.querySelector('.menu__list__inner ul')
+    , list       = document.createDocumentFragment()
+    , rand       = (max, min) => Math.random() * (max - min) + min
+    , i          = 0
+    , item       = null
+
+  for ( i; i < rand(2, 15); i++ ) {
+    item = createNode(`
+      <li class="menu__list__item">
+        <div>
+          <span class="menu__list__label">label ${i+1}</span>
+        </div>
+      </li>
+    `)
+    list.appendChild(item)
+  }
+
+  listElm.innerHTML = ''
+  listElm.appendChild(list)
 })
 
 menuShieldDiv.addEventListener('click', e =>
