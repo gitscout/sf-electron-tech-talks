@@ -87,10 +87,22 @@
 
       .js-menu {
         /*background: rgba(255, 0, 0, .3);*/
+        border-bottom: 1px dotted #fff;
         display: inline-block;
         height: 25px;
         line-height: 25px;
-        padding: 0 5px
+        margin: 0 5px
+      }
+
+      .js-menu:hover {
+        border-bottom-color: #000;
+        color: #4e5153;
+      }
+
+      .js-menu:focus {
+        border-bottom: 1px solid #000;
+        color: #4e5153;
+        outline: none;
       }
 
       .space-between {

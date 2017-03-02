@@ -85,11 +85,11 @@ const handleToggleMenu = e =>
   else
     if( menuHeight > height )
     {
-      // let availableH = confHeight - ( menuHeight - height )
+      let availableH = confHeight - ( menuHeight - height )
 
-      // if( availableH > confMinHeight && menuY + availableH <= height )
-      //   menuH = availableH
-      // else
+      if( availableH > confMinHeight ) // && menuY + availableH <= height )
+        menuH = availableH
+      else
         reverseMenu()
     }
 
