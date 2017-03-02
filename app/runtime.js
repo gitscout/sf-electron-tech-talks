@@ -1,14 +1,17 @@
 const { app, ipcMain, BrowserWindow } = require('electron')
-const Config = require('./config')
 
-const path = require('path')
-const url = require('url')
+const Config = require('./config')
+    , path   = require('path')
+    , url    = require('url')
+
+global.getWindowId = name => windowsId[ name ]
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
   , workerWindow
   , menuWindow
+  , windowsId = {}
 
 const getFilePath = fileName =>
   url.format({
@@ -17,7 +20,8 @@ const getFilePath = fileName =>
     , slashes:  true
   })
 
-function createWindows () {
+function createWindows ()
+{
   // Create the browser window.
   mainWindow = new BrowserWindow({
       width:            360
@@ -28,15 +32,16 @@ function createWindows () {
     , maxHeight:        600
     , show:             false
     , frame:            false
-    // , titleBarStyle:    'hidden-inset'
     , acceptFirstMouse: true // TALK -  capture mouse events that simultaneously activates the window
   })
 
   // and load the index.html of the app.
   mainWindow.loadURL( getFilePath( 'main' ) )
 
+  windowsId.main = mainWindow.id
+
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools( { detach: true } )
+  mainWindow.webContents.openDevTools( { detach: true } )
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -46,14 +51,6 @@ function createWindows () {
     mainWindow = null
   })
 
-  // mainWindow.on('blur', e => console.log('blur main'))
-
-  workerWindow = new BrowserWindow({
-      width:  100
-    , height: 100
-    , show:   false
-    , title:  'worker'
-  })
 
   menuWindow = new BrowserWindow({
       parent:      mainWindow
@@ -61,6 +58,8 @@ function createWindows () {
     , frame:       false
     , transparent: true
     , hasShadow:   false
+    , resizable:   false
+    , skipTaskbar: true
     , width:       Config.menu.width
     , height:      Config.menu.height
     // , center:      true
@@ -69,18 +68,12 @@ function createWindows () {
     // , x: 0
   })
 
+  windowsId.menu = menuWindow.id
+
   menuWindow.loadURL( getFilePath( 'menu' ) )
-  // menuWindow.setIgnoreMouseEvents( true )
 
   // Open the DevTools.
   // menuWindow.webContents.openDevTools( { detach: true } )
-
-  menuWindow.on('blur', e =>
-  {
-    mainWindow.webContents.send('remove-focus')
-    menuWindow.webContents.send('menu-blurred')
-    menuWindow.setIgnoreMouseEvents( true ) // TALK - pointer event
-  })
 
   menuWindow.on('focus', e =>
   {
@@ -98,6 +91,28 @@ function createWindows () {
   })
 }
 
+const closeMenu = e => {
+  mainWindow.webContents.send('remove-focus')
+  mainWindow.focus()
+  menuWindow.webContents.send('menu-blurred')
+  menuWindow.setIgnoreMouseEvents( true ) // TALK - pointer event
+}
+
+app.on('browser-window-blur', () =>
+{
+  let wins       = BrowserWindow.getAllWindows()
+    , appFocused = false
+
+  wins.forEach( function( win )
+  {
+    if( win.isFocused() )
+      appFocused = true
+  })
+
+  if( !appFocused )
+    mainWindow.webContents.send('remove-focus')
+})
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -110,13 +125,31 @@ app.on('ready', () =>
     menuWindow.webContents.send('menu-setup', { direction, arrow, pull })
     menuWindow.setSize( w, h )
     menuWindow.setPosition( x, y )
-    // menuWindow.show()
     menuWindow.focus()
   })
 
-  ipcMain.on('menu-close', ( e, motif ) =>
+    //== Dropdown menu
+  ipcMain.on('menu-close', closeMenu )
+
+  ipcMain.on('ClickableRegion::mouse-event', ( e, data ) =>
   {
-    mainWindow.focus()
+    const appPos  = mainWindow.getPosition()
+        , menuPos = menuWindow.getPosition()
+
+
+    data = Object.assign( data, {
+        x: ( menuPos[0] - appPos[0] ) + data.x
+      , y: ( menuPos[1] - appPos[1] ) + data.y
+    })
+
+    // TALK - click through outside app
+    if( data.type === 'mouseDown' && ( data.x < 0 || data.y < 0 ) )
+      return app.hide()
+
+    mainWindow.webContents.sendInputEvent( data )
+
+    if( data.type === 'mouseDown' || data.type === 'mouseWheel' )
+      closeMenu()
   })
 })
 

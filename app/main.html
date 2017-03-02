@@ -33,12 +33,18 @@
         height: 100%;
       }
 
-      .topBar {
+      .top-bar {
         background: #efefef;
         flex: 0 0 40px;
         line-height: 40px;
         text-align: center;
         -webkit-app-region: drag;
+      }
+
+      .top-bar button[id="toggleMenuBkgd"] {
+          position: absolute;
+          top: 12px;
+          right: 14px;
       }
 
       .squares {
@@ -206,31 +212,32 @@
     </style>
 <!--  onclick="require('electron').remote.getFocusedWindow()" -->
   </head>
-  <body class="focus -keep-focus" tabindex="-1">
+  <body class="focus -keep-focus" tabindex="0">
     <div class="main">
-      <div class="topBar">
+      <div class="top-bar" id="topBar">
         <div class="traffic-lights">
-          <button tabindex="-1" class="traffic-light traffic-light-close"></button>
-          <button tabindex="-1" class="traffic-light traffic-light-minimize" id="minimize"></button>
-          <button tabindex="-1" class="traffic-light traffic-light-maximize" id="maximize"></button>
+          <button tabindex="-1" id="traffic-close" class="traffic-light traffic-light-close"></button>
+          <button tabindex="-1" id="traffic-minimize" class="traffic-light traffic-light-minimize" id="minimize"></button>
+          <button tabindex="-1" id="traffic-maximize" class="traffic-light traffic-light-maximize" id="maximize"></button>
         </div>
-        Hello World!
+        Popover demo
+        <button id="toggleMenuBkgd">show layer</button>
       </div>
       <ul class="squares">
         <li>
-          <span class="js-menu" tabindex="1">user name</span>
+          <span class="js-menu" tabindex="1">Basic popover </span>
         </li>
         <li>
-          <span class="js-menu" tabindex="2" data-pull="right">repository</span>
+          <span class="js-menu" tabindex="2" data-pull="right">pull right</span>
         </li>
         <li>
-          <span class="js-menu" tabindex="3">some stuff</span> || <span class="js-menu" tabindex="4" data-pull="left">other stuff</span>
+          <span class="js-menu" tabindex="3">centered</span> •• <span class="js-menu" tabindex="4" data-pull="left">pull left</span>
         </li>
         <li>
-          <span class="js-menu" tabindex="5" data-pull="left">assignee</span>
+          <span class="js-menu" tabindex="5" data-pull="left">bottom left</span>
         </li>
         <li>
-          <span class="js-menu" tabindex="6">milestone</span>
+          <span class="js-menu" tabindex="6">can be reversed</span>
         </li>
       </ul>
     </div>
