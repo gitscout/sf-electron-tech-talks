@@ -100,7 +100,7 @@ const handleToggleMenu = e =>
   // Set shield before arrow!!
   let shieldLeft = pull === 'center'
                  ? Math.floor( arrow - ( tW / 2 ) )
-                 : pull === 'left' ? confShadowLeft : confWidth - tW - confShadowLeft
+                 : pull === 'left' ? confShadowLeft : confWidth - tW - confShadowRight - confShadowLeft
 
   if( arrow < 20 )
     arrow = 20

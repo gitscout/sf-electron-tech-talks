@@ -53,7 +53,7 @@ ipcRenderer.on('menu-setup', ( e, props ) =>
     , i          = 0
     , item       = null
 
-  for ( i; i < rand(2, 15); i++ ) {
+  for ( i; i < rand(2, 9); i++ ) {
     item = createNode(`
       <li class="menu__list__item">
         <div>

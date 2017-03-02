@@ -41,7 +41,7 @@ function createWindows ()
   windowsId.main = mainWindow.id
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools( { detach: true } )
+  mainWindow.webContents.openDevTools( { detach: true } )
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -73,7 +73,7 @@ function createWindows ()
   menuWindow.loadURL( getFilePath( 'menu' ) )
 
   // Open the DevTools.
-  // menuWindow.webContents.openDevTools( { detach: true } )
+  menuWindow.webContents.openDevTools( { detach: true } )
 
   menuWindow.on('focus', e =>
   {

@@ -256,6 +256,9 @@ body {
   text-align: center; }
 
 body.show-bkgd { background-color: rgba(255, 0, 0, .3) }
+body.show-bkgd .menu__shield div { background-color: rgba(255,255, 0, .4) }
+
+body.show-bkgd .h-rule { display: block }
 
 body.menu-ready {
   opacity: 1; }
@@ -335,7 +338,7 @@ body.menu-ready {
   flex: 0 0 26px;
   margin-bottom: 9px; }
   .menu__shield div {
-    background: rgba(255,255, 0, .4) url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+    background-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
     position: relative;
     width: auto; }
 
