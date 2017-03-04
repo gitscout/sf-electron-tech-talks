@@ -38,17 +38,10 @@ function createWindows ()
   // and load the index.html of the app.
   mainWindow.loadURL( getFilePath( 'main' ) )
 
-  // mainWindow.on('move', function () {
-  //    console.log(JSON.stringify(mainWindow.getBounds()))
-  // })
-  //
-
-
-
   windowsId.main = mainWindow.id
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools( { detach: true } )
+  // mainWindow.webContents.openDevTools( { detach: true } )
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -168,7 +161,6 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 })
-
 
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
