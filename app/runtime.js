@@ -143,8 +143,14 @@ app.on('ready', () =>
     })
 
     // TALK - click through outside app
-    if( data.type === 'mouseDown' && ( data.x < 0 || data.y < 0 ) )
-      return app.hide()
+    if( data.type === 'mouseDown' && ( data.x < 0 || data.y < 0 ) ) {
+      if (process.platform === 'darwin') {
+        return app.hide()  // macOS only function
+      } else {
+        closeMenu()
+        return
+      }
+    }
 
     mainWindow.webContents.sendInputEvent( data )
 
