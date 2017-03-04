@@ -32,12 +32,35 @@ document.getElementById('toggleMenuBkgd').addEventListener('mousedown', e =>
   menuWindow.webContents.send('menu-showlayer', showBkgd )
 })
 
+const getTotalWorkArea = () => {
+  const screens = screen.getAllDisplays()
+
+  let maxX=0, minX=0, maxY=0, minY=0
+  screens.forEach( function( s )
+  {
+    minX = Math.min(s.workArea.x, minX)
+    maxX =   Math.max(s.workArea.x + s.workArea.width, maxX)
+    minY =   Math.min(s.workArea.y, minY)
+    maxY =   Math.max(s.workArea.y + s.workArea.height, maxY)
+  })
+
+  let result = {}
+  result.x = minX
+  result.y = minY
+  result.width = maxX - minX
+  result.height = maxY - minY
+
+  return result
+}
+
 const handleToggleMenu = e =>
 {
+  let totalWorkArea = getTotalWorkArea()
+
   const target                 = e.target
       , { bW, bH, bL, bR, bT } = getRect( document.body, 'b' )
       , { tW, tH, tL, tR, tT } = getRect( target, 't' )
-      , { width, height }      = screen.getPrimaryDisplay().workAreaSize
+      , { width, height }      = totalWorkArea
       , [ x, y ]               = BrowserWindow.getFocusedWindow().getPosition()
       , winBottomBound         = y + bH
       , confWidth              = 216 //menuConf.width
@@ -63,13 +86,14 @@ const handleToggleMenu = e =>
   if( pull === 'right' )
     menuX = x + tL + tW - ( confWidth - ( pullLeftArrow / 2 ) )
 
-  if( menuX < 0 )
-    menuX = menuX + Math.abs( menuX ) + tL
+  if( menuX < totalWorkArea.x )
+    menuX = totalWorkArea.x + tL
 
   const menuRight = menuX + confWidth
+  const maxX = totalWorkArea.x + totalWorkArea.width
 
-  if( menuRight > width )
-    menuX = menuX - ( menuRight - width )
+  if( menuRight > maxX )
+    menuX = menuX - ( menuRight - maxX )
 
   let menuHeight    = menuY + confHeight
     , isUnderBottom = menuY + tH > winBottomBound
